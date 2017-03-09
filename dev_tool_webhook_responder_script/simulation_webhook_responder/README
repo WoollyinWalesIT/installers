@@ -1,0 +1,3 @@
+Designed to receive webhook notifications from a server, then call that server back through it's API to receive information about the webhook notification.
+
+Allows remote services to selectively decide what information they need. Also means I can concentrate on api functionality for this specific feature as a way of fleshing out the REST API with practical code.
