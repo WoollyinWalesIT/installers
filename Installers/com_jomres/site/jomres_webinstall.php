@@ -315,14 +315,15 @@ if ($server_tests_pass&& !isset($_REQUEST['start']))
 elseif ($server_tests_pass && isset($_REQUEST['start']) )
 	{
 	$include_beta = (bool)$_REQUEST['includebeta'];
-	set_time_limit(0);
+	
+	//set_time_limit(0);
 
 	PiwikTracker::$URL = 'http://analytics.jomres.net/';
 	$piwikTracker = new PiwikTracker( $idSite = 2 );
 	// Sends Tracker request via http, regardless of whether the user's chosen to enable or disable tracking. If they have disabled it, then the remote server will just disregard the tracking information sent, so there's no need to check here for the tracking cookie.
 	$piwikTracker->doTrackGoal($idGoal = 1);
 	
-	echo "Time limit set to ".ini_get('max_execution_time')." (this is just to stop the server timing out while we do the download)<br>";
+	//echo "Time limit set to ".ini_get('max_execution_time')." (this is just to stop the server timing out while we do the download)<br>";
 
 	global $debugging;
 
