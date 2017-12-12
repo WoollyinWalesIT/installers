@@ -10,7 +10,32 @@ class com_jomresInstallerScript //http://joomla.stackexchange.com/questions/5687
  
     function update($parent) {}
  
-    function uninstall($parent) {}
+    function uninstall($parent) 
+		{
+		$jversion = new JVersion();
+
+		if ($jversion->RELEASE == "2.5")
+			$sep = DS;
+		else
+			$sep = DIRECTORY_SEPARATOR;
+		
+		define( '_JOMRES_INITCHECK', 1 );
+
+		if (file_exists(JPATH_ROOT.$sep.'jomres_root.php')) {
+			require_once JPATH_ROOT.$sep.'jomres_root.php';
+		} else {
+			return;
+		}
+
+		if (file_exists(JPATH_ROOT.$sep.JOMRES_ROOT_DIRECTORY.$sep.'integration.php')) {
+			require_once JPATH_ROOT.$sep.JOMRES_ROOT_DIRECTORY.$sep.'integration.php';
+		} else {
+			return;
+		}
+
+		$jomres_uninstall = jomres_singleton_abstract::getInstance('jomres_uninstall');
+		$jomres_uninstall->uninstall();
+		}
  
     function postflight($type, $parent)
 		{
