@@ -39,6 +39,35 @@ class com_jomresInstallerScript //http://joomla.stackexchange.com/questions/5687
  
     function postflight($type, $parent)
 		{
+			// Scan htaccess to see if RewriteCond %{REQUEST_FILENAME} (\.php)$  exists. If so the htaccess file has been secured, most likely by admin tools, to prevent calling of individual scripts. As Jomres will not install with these lines in place we need to ask the user to disable that feature or modify the .htaccess file.
+			$htaccess = file_get_contents(JPATH_ROOT.DIRECTORY_SEPARATOR.'.htaccess');
+			
+			if ( strpos ($htaccess ,  'RewriteCond %{REQUEST_FILENAME} (\.php)$') !== false ) {
+				throw new Exception("Your .htaccess file contains a rewrite condition that says RewriteCond %{REQUEST_FILENAME} (\.php)$
+				
+				Whilst this is a good thing normally, to install Jomres we need to ask you to temporarily remove it from your .htaccess file so that we can install Jomres.  More information here https://http://www.jomres.net/manual/installation-and-upgrading/3-requirements
+				Once you have done that, you can re-attempt the installation. In the next step we will check to see if the language filter is installed and enabled. If it is enabled, we will ask you to disable that briefly too.");
+			}
+			
+			$db = JFactory::getDbo();
+
+			$query = $db->getQuery(true);
+
+			$query->select($db->quoteName(array('name', 'enabled')))
+				  ->from($db->quoteName('#__extensions'));
+
+			$db->setQuery($query);
+
+			$results = $db->loadObjectList();
+
+			foreach ($results as $extension)
+			{
+				if ($extension->name == 'plg_system_languagefilter' && $extension->enabled == "1") {
+					throw new Exception("The system plugin Language Filter is enabled. Please disable it while you install Jomres. Once Jomres has been installed you can enable it again.");
+				}
+			}
+
+
 		// Clear Joomla system cache.
 		/** @var JCache|JCacheController $cache */
 		$cache = JFactory::getCache();
