@@ -3,7 +3,7 @@ Contributors: jomres
 Tags: Booking, booking calendar, events, hotel, hotels, calendar, motel, motels, booking system, booking portal, room booking, online booking software, booking engine, online reservation, online reservation system, reservation system, reservation widget, hotel booking, villa booking, villa rentals, accommodation, reservation, reserve room, availability, availability calendar, bed and breakfast, booking form, booking enquiry, web booking, reservation plugin, holiday apartments, holiday rentals, apartment rentals, cottage rental, b&b, tool hire, ecommerce, shop, store, ajax, gallery, slideshow, portal, twitter, online booking system, tours, api, json, REST, rest-api, webhooks
 Donate link: https://www.jomres.net
 Requires at least: 4.3.1
-Tested up to: 4.9.4
+Tested up to: 4.9.5
 Stable tag: trunk
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,6 +13,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 = Complete Online Booking and Property Management Solution for Accommodation, Rentals and Tours =
 
 Jomres is a commission-free, responsive, Open Source multi-vendor, multi-language, multi-property online booking plugin for accommodation, rentals and tours used by thousands of businesses worldwide to manage their properties and reservations. Fully-integrated into WordPress, you can create an unlimited number of booking websites, accessible to customers on any device, in any language.
+
+New in May 2018 : Jomres 9.11.0 is available as our <a href="http://www.jomres.net/manual/installation-and-upgrading/370-installing-updating-to-the-nightly-branch" target="_blank">Nightly build</a>. This version includes significant changes to ensure that <a href="http://www.jomres.net/manual/site-managers-guide/372-jomres-and-the-gdpr">Jomres is compliant with the GDPR</a> and we have made it available for users who want to help us with testing this new functionality.
 
 <blockquote>
 	<p>
@@ -125,9 +127,169 @@ If you've got a download and support license you can raise a [ticket](http://tic
 
 == Changelog ==
 
-You can not install this file through the Wordpress installer features.
+Visit the [Downloads](https://www.jomres.net/download) page on our site to see the installation options available to you.
 
-Instead we recommend that you visit the [Downloads](https://www.jomres.net/download) page on our site to see the options available to you.
+= Jomres 9.10.2 27/03/2018 =
+
+* Removed singleton specific code from all classes that don`t need it. There is only one singleton in Jomres, jomres_singleton_abstract class and this is the container for all other classes instances.
+* Deferred tasks modified to use Guzzle.
+* Added setting to change token lifetime.
+* Added database update script to remove old tokens.
+* Added the ability to pre-filter room types in the booking form.
+* Added support for the availability calendar to use the week start day setting.
+* Improved jquery ui availability calendar css.
+* Improved how we check if Jomres is installed. If db tables are created but no properties exist, we`ll consider that Jomres is not properly installed and execute the installation routine.
+* Modified the create multiple room script so that maximum rooms are now 1000 and max guests are 100.
+
+* Several language files updated to show correct link to email template editing page in manual.
+* Fixed an issue with a couple of dots too many, thanks kopfnuss.
+* Resolved an issue where token not deleted when client deleted.
+* Solved a problem with fixed arrival days in property details jquery ui calendar not showing colours.
+* Fixed a bug that prevented new property features to be created.
+* Solved a problem with redirects on update.
+* Solved a notice in label translations.
+
+= Jomres 9.10.1 14/03/2018 =
+
+* Fixed a bug in the new installer that didn't come to light until after testing.
+
+
+= Jomres 9.10.0 14/03/2018 =
+
+* Installation process completely rewritten and modernised.
+* Added a feature where property managers can elect to hide the property street from display to normal users. Users who have created a booking for that property can see the full address details.
+* Added availability calendar modal to SRP properties booking form too
+* Added support for downloading Nightly builds.
+
+
+* Modified list properties so that EDIT_LINK could be added to list properties output for managers to quickly edit a property.
+* Updated booking form to honour the "do not show inline calendars" setting from property config > property details tab.
+* Added code to detect that Jomres has been moved to a new server and rebuild the registry.
+* Tweaked frontend nag so that it doesn't show up if is an ajax call.
+* Modified ui availability calendar so that if fixed arrival day setting is used then other days will not be clickable.
+* Both MRP and SRP calendars updated so that bookable dates are highlighted, and other dates disabled, when fixed day of week booking set.
+* Modified date input feature for search modules so that if site is set to a single property installation then the first published property has it's settings used and if fixed arrival day is set to Yes then to set the search module's calendar to disable other days.
+* Extended POA price feature to show in lists.
+* Updated the jquery ui themes path
+* pt-PT datepicker code updated
+* Added jquery chained js back to jomres assets
+* Added an experimental feature to optimize images for the web on upload.
+* Custom flight methods updated to add "exit"s after the response has been sent.
+* Added functionality that allows PUT requests through the API to behave like POST requests.
+* Added functionality to allow downloading of development versions of Jomres thru the CMS in future versions (currently Joomla only)
+* Added detection of Joomla debugging setting, which allows installation of development versions of Jomres onto new installations of Joomla.
+* Removed a script that shows license failures in the frontend. No longer needed now that the plugin manager is ioncube encoded for subscriptions.
+* Added a check for a missing class which can sometimes trip users up when moving installations to a new server.
+* Added translation support for datatables Column Visibility button.
+
+
+* Solved a problem with media centre existing images that don`t have thumbnails created.
+* Resolved an issue where reviews would not save in test mode.
+* Solved a problem where personal guest discounts were not reflected on invoices.
+* Added jquery chained js back to jomres assets.
+* Solved a problem with short language codes.
+* Updated the jquery ui themes path.
+* Solved a problem with charts selection when sef enabled.
+* Modified a string in the French language file as the single quote causes problems with booking notes table when a guest is booked out.
+* Modified the core showplugin script to ensure that it passes the php version, without it the wrong encoded version of the plugin manager was being returned.
+
+= Jomres 9.9.19 24/01/2018 =
+
+* Added a new feature to copy booking emails sent to property managers to site admins too. Setting can be found in Site Configuration -> Booking Form tab.
+
+* Updated dependencies
+
+* Installer updated to cope with mysql installations that mangle table name cases.
+* Solved a notice in integration.php
+
+= Jomres 9.9.18 22/01/2018 =
+
+
+* Added a new setting to Tariffs and Currencies tab which allows property managers to save a basic price that would be shown if no prices can otherwise be determined. When properties are shown in a list, the system will attempt to find a valid price from configured tariffs based on either today's date, or if dates were used in a search, then based on those dates. If it cannot, then it will show POA (Price on application), meaning that the guest should contact you to get a price. If you want, you can configure a price here that will be shown instead of the POA text. This figure would be a "fallback" price to display if no other price can be determined.
+* Updated a feature that allows you to include a script's output in a template without modifing the calling script's corresponding minicomponent.
+* Updated template override functionality to 1. Allow templates to reside in /plugin_name/templates/bootstrapN/ directories as well as the plugin's root and 2. Allow template overrides to have property type overrides underneath /plugin_name/templates/bootstrapN/, such as /plugin_name/templates/bootstrapN/P where P is the property type id.
+* Added a feature whereby property features can be configured to not show in search lists.
+* Moved all jomres core js, css, images, templates and map_styles to /assets dir and updated all paths accordingly. This begins the process of preparing for Joomla 4 and Bootstrap 4.
+* Most javascript files are now managed via npm ( npm is the package manager for JavaScript ). Results in a larger footprint, but libraries are updated regularly.
+
+* Modified how we get the site url. The previous function used would not return https as the protocol part of the url, even if the site was being accessed via https ( so far this has only appeared on wpengine ) which resulted in weird behaviour like being unable to save the license key. Changing the function fixes this.
+* Instead of relying on the monolog library, added code to the logging class to create logging directories where required.
+* Tweaked dobooking.php to adjust how we can hand off the property uid to the booking engine.
+* Updated datatables for jquery 3, joomla 4 only
+* Added functionality that forces a re-installation the Jomres plugin manager. Without this upgraders will need to manually update 40 or so (to date) updated plugins for .18, which would be tiresome for users and result in lots of tickets.
+* Tweaked image urls to use relative path without domain to increase speed
+* Added a new trigger point to add settings from plugins to debugging tab
+
+* Fixed some notices caused by deleted cms users that have reviews posted or are still set as partners in jomres
+* Solved a problem with how percentage extra prices are displayed in property details
+
+= Jomres 9.9.17 12/12/2017 =
+
+* Added cancellation reason output support to booking email templates
+* basic_contract_details class updated to include last_changed and referrer db columns.
+* Improved redirect url handling to base64 encode urls. Without encoding urls, redirect url tasks are treated as the real task, causing tariff exporting functionality in the Beds24 plugin to not work.
+
+* Fixed a link in emails
+* Fixed a notice in property list triggered when the budget feature is disabled
+* Solved a problem with searched dates always being reset on the booking form
+* Solved a problem with guest types when amending bookings
+
+= Jomres 9.9.16 20/11/2017 =
+
+* Added room names and numbers to Amend Booking panel in booking form when editing a booking.
+* Added functionality to allow payment gateways to pass transaction ids and payment methods to invoice line items.
+* Email Admin when Jomres has a New Update
+
+* Made the version check a cron job
+* Removed a depreciated setting from jomres_config.php
+* Added PROPERTY_NAME_FULL to property list templates.
+* Small improvement when detecting the localhost ip
+* Added ability to add extra information to developer output on fatal error, and added query details to jomres_database.class.php
+* Moved where the 00015 trigger point is fired in viewproperty script.
+* Added ability to pass "redirect_url" in $_REQUEST and let jomresRedirect function use that instead of the url passed by the calling method.
+* Added support for displaying transaction id and gateway in admin invoices too, plus some minor layout tweaks
+* Removed an unneeded global in the en-GB language file
+* Modified the link to the max input vars explanation page to point to a new page in the manual.
+* Added a button to close the jomres review message that shows up in admin cpanel
+* Removed a require in logging class that's no longer needed.
+* Improved logging of missing classes caused sometimes by incomplete updates
+* Moved where we check if the request is an ajax call in integration.php
+
+* Fixed a notice in view booking page caused by deleting guest types
+* Resolved a notice in booking insert regarding channel_manager_booking flag.
+
+
+= Jomres 9.9.15 06/11/2017 =
+
+* Added a flag to mark if a booking is from a channel manager or not. Depending on this, the commission plugin will add or not add the booking commission line item to the unissued invoice.
+* Changed how balance is calculated in booking emails. Only calculate balance if deposit was paid. If not, the full amount is the balance.
+* Improved rooms dropdown in media centre to include room type too, beside room name and number
+* Added a default value for channel_manager_booking in the temp booking handler.
+* Added a warning to the showplugins script to alert if the zipArchive extension is not installed in PHP
+* Changed what happens after the key is saved by the auto installer. Forces the license cache file to be updated more quickly.
+* Modified how guest type numbers are retrieved when editing a booking.
+* Tweaked a backtrace to provide more information.
+* Better sanitize the uploaded images filenames
+* Renamed shortcode_parser class to jomres_shortcode_parser to avoid naming conflicts with 3rd party wp plugins
+* Removed 3 obsolete classes
+* Added automatic cleanup on uninstall functionality.
+* Added review request to admin control panel.
+
+* Fixed an issue where autoloader wasn't being called by api
+* Fixed an incorrect path that prevented the authorisation url for oauth authorisation requests
+* Solved a problem with map height not being applied properly
+* Creative way to catch errors related to classes that don`t exist anymore, for example when upgrading Jomres, so they won`t throw a fatal error anymore and allow updating. Composer update done too.
+* Solved a problem with joomla menu item urls which had duplicated ? sign.
+* Solved a problem related to duplicate last minute discount on invoices.
+
+= Jomres 9.9.14 10/10/2017 =
+
+* Implemented new code that allows site admins to register trial license keys through the administrator area.
+* Removed api vendor dir as now all api libraries are included in the core
+* Added property publish method to jomres properties class. Improved property config so that we won`t get all property configs from db, but just the configs for the properties we need
+
+* Solved a partner discount incorrect amount on invoices
+* Improved installer to remove duplicate records from jomres custom text table and after that add a unique index to prevent future duplicates.
 
 = Jomres 9.9.13 29/09/2017 =
 

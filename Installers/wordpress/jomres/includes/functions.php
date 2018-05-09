@@ -166,6 +166,15 @@ function run_jomres_installer( $method = 'install' ) {
 	WP_Filesystem();
 	
 	global $wp_filesystem;
+	
+	//check disk space
+	$disk_free_space = free_space();
+
+	if ( $disk_free_space < 300 ) {
+		jomres_notice( 'There is not enough disk space available to download and extract Jomres.' );
+		
+		return false;
+	}
 
 	//get the latest jomres version download url
 	$url = 'http://updates.jomres4.net/getlatest.php?includebeta=true';
@@ -184,19 +193,36 @@ function run_jomres_installer( $method = 'install' ) {
 	}
 
 	//download jomres core
-	$response = wp_remote_get($url);
+	$response = wp_remote_get( $url );
 	
 	if ( strlen( $response[ 'body' ] ) == 0 ) {
 		jomres_notice( 'There was an error getting the latest Jomres version number.' );
 		
 		return false;
 	}
+
+	//set source and target
+	$source = get_temp_dir() . 'jomres.zip';
+	$target = ABSPATH . JOMRES_ROOT_DIRECTORY;
+	
+	//check if /jomres dir is writable
+	if ( ! wp_is_writable( $target ) ) {
+		jomres_notice( 'Jomres dir ' . $target . ' can`t be created or it`s not writable. Using FTP, create the directory manually then re-run the installer, many times this will solve the problem.' );
+		
+		return false;
+	}
 	
 	//download Jomres
+	$options = array( 
+		'timeout' => 300, 
+		'stream' => true, 
+		'filename' => $source 
+	);
+	
 	if ( ! $nightly ) {
-		$response = wp_remote_get( $response['body'], array( 'timeout' => 300, 'stream' => true, 'filename' => ABSPATH . '/tmp/jomres.zip' ) );
+		$response = wp_remote_get( $response['body'], $options );
 	} else {
-		$response = wp_remote_get( $nightly_url, array( 'timeout' => 300, 'stream' => true, 'filename' => ABSPATH . '/tmp/jomres.zip' ) );
+		$response = wp_remote_get( $nightly_url, $options );
 	}
 	
 	if ( is_wp_error( $response ) ) {
@@ -204,11 +230,8 @@ function run_jomres_installer( $method = 'install' ) {
 		
 		return false;
 	}
-
-	//unzip jomres files
-	$source = ABSPATH . '/tmp/jomres.zip';
-	$target = ABSPATH . JOMRES_ROOT_DIRECTORY;
 	
+	//unzip jomres files
 	$unzipfile = unzip_file( $source, $target );
 
 	if ( is_wp_error( $unzipfile ) ) {
@@ -263,4 +286,25 @@ function jomres_notice( $notice ) {
 		'<div class="notice notice-error is-dismissible"><p><strong>%s</strong></p></div>',
 		esc_html( $notice )
 	);
+}
+
+/**
+ * Get disk free space.
+ *
+ * Utility function to get the disk space available (in MB) to download and extract Jomres
+ *
+ * @since    9.10.3
+ */
+function free_space( $path = ABSPATH ) {
+	
+	$space = @disk_free_space( $path );
+	
+	if ( $space === false || is_null( $space ) ) {
+		return 0;
+	}
+	
+	//convert to MB
+	$space = round( $space / 1024 / 1024 );
+	
+	return $space;
 }
