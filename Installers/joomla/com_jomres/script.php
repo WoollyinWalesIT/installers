@@ -49,14 +49,16 @@ class com_jomresInstallerScript //http://joomla.stackexchange.com/questions/5687
 			return false;
 		}
 		
+		// Disabled as doesn't work
+		
 		//check disk space
-		$disk_free_space = $this->free_space();
+		/* $disk_free_space = $this->free_space();
 
 		if ( $disk_free_space < 300 ) {
 			JError::raiseWarning(null, 'There is not enough disk space available to download and extract Jomres.');
 			
 			return false;
-		}
+		} */
 		
 		//set the jomres download url
 		$url = 'http://updates.jomres4.net/getlatest.php?includebeta=true';
