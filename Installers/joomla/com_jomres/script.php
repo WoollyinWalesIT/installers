@@ -6,7 +6,7 @@ use Joomla\Archive\Archive;
 
 class com_jomresInstallerScript //http://joomla.stackexchange.com/questions/5687/script-not-running-on-plugin-installation
 {
-    function preflight($type, $parent) 
+	function preflight($type, $parent) 
 	{
 		@ignore_user_abort(true);
 		@set_time_limit(0);
@@ -49,16 +49,14 @@ class com_jomresInstallerScript //http://joomla.stackexchange.com/questions/5687
 			return false;
 		}
 		
-		// Disabled as doesn't work
-		
 		//check disk space
-		/* $disk_free_space = $this->free_space();
+		$disk_free_space = $this->free_space();
 
 		if ( $disk_free_space < 300 ) {
 			JError::raiseWarning(null, 'There is not enough disk space available to download and extract Jomres.');
 			
 			return false;
-		} */
+		}
 		
 		//set the jomres download url
 		$url = 'http://updates.jomres4.net/getlatest.php?includebeta=true';
@@ -181,8 +179,8 @@ class com_jomresInstallerScript //http://joomla.stackexchange.com/questions/5687
 			return false;
 		}
 	}
-     
-    function install($parent) 
+	 
+	function install($parent) 
 	{
 		if (!defined('_JOMRES_INITCHECK')) {
 			define('_JOMRES_INITCHECK',1);
@@ -215,7 +213,7 @@ class com_jomresInstallerScript //http://joomla.stackexchange.com/questions/5687
 		}
 	}
  
-    function update($parent) 
+	function update($parent) 
 	{
 		if (!defined('_JOMRES_INITCHECK')) {
 			define('_JOMRES_INITCHECK',1);
@@ -248,7 +246,7 @@ class com_jomresInstallerScript //http://joomla.stackexchange.com/questions/5687
 		}
 	}
  
-    function uninstall($parent) 
+	function uninstall($parent) 
 	{
 		if (!defined('_JOMRES_INITCHECK')) {
 			define('_JOMRES_INITCHECK',1);
@@ -281,7 +279,7 @@ class com_jomresInstallerScript //http://joomla.stackexchange.com/questions/5687
 		}
 	}
  
-    function postflight($type, $parent) 
+	function postflight($type, $parent) 
 	{
 		//
 	}
