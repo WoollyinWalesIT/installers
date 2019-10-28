@@ -170,11 +170,11 @@ function run_jomres_installer( $method = 'install' ) {
 	//check disk space
 	$disk_free_space = free_space();
 
-	if ( $disk_free_space < 300 ) {
+	/* if ( $disk_free_space < 300 ) {
 		jomres_notice( 'There is not enough disk space available to download and extract Jomres.' );
 		
 		return false;
-	}
+	} */
 
 	//get the latest jomres version download url
 	$url = 'http://updates.jomres4.net/getlatest.php?includebeta=true';
